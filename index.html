@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Talks AI - Voice Infrastructure for India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep:   #1C2B1E;
+  --green-mid:    #2D4A32;
+  --green-light:  #3D6342;
+  --cream:        #F5F0E8;
+  --cream-dark:   #EDE7D9;
+  --cream-darker: #E0D8C8;
+  --sienna:       #C8490C;
+  --sienna-light: #E8673A;
+  --brown:        #8B7355;
+  --brown-light:  #B8A88A;
+  --ink:          #1A1710;
+  --ink-2:        #3A3428;
+  --ink-3:        #6B6050;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Instrument Sans', sans-serif;
+  --ease: cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ══ NAVIGATION ══ */
+nav {
+  background: var(--green-deep);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+.nav-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-brand-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.nav-brand-sub {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 0;
+}
+.nav-links a {
+  display: block;
+  padding: 0 18px;
+  height: 60px;
+  line-height: 60px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: rgba(245,240,232,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-contact {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--sienna);
+  border: none;
+  padding: 9px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-contact:hover { background: var(--sienna-light); }
+.nav-mob { display: none; }
+
+/* ══ HERO ══ */
+.hero {
+  background: var(--green-deep);
+  position: relative;
+  overflow: hidden;
+  padding: 0 3rem;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 55%;
+  height: 100%;
+  background: var(--green-mid);
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 88vh;
+  position: relative;
+  z-index: 1;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 5rem 6rem 0;
+}
+.hero-kicker {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sienna-light);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-kicker::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--sienna);
+}
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.8rem, 6.5vw, 6.2rem);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 2rem;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: rgba(245,240,232,0.45);
+}
+.hero-desc {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.5);
+  line-height: 1.75;
+  max-width: 400px;
+  margin-bottom: 3rem;
+}
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.btn-fill {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--sienna);
+  border: 1px solid var(--sienna);
+  padding: 13px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-fill:hover { background: var(--sienna-light); border-color: var(--sienna-light); }
+.btn-ghost {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.65);
+  background: transparent;
+  border: 1px solid rgba(245,240,232,0.2);
+  padding: 13px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { color: var(--cream); border-color: rgba(245,240,232,0.5); }
+.arr {
+  display: inline-block;
+  font-style: normal;
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+.btn-fill:hover .arr, .btn-ghost:hover .arr { transform: translateX(3px); }
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 0 6rem 5rem;
+}
+.hero-stats-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+.hero-stat-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(245,240,232,0.07);
+  border: 1px solid rgba(245,240,232,0.07);
+  margin-bottom: 2rem;
+}
+.hero-stat {
+  background: var(--green-deep);
+  padding: 22px 20px;
+  transition: background 0.2s;
+}
+.hero-stat:hover { background: var(--green-mid); }
+.hero-stat-n {
+  font-family: var(--serif);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.hero-stat-l {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lang-cloud-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+  margin-bottom: 12px;
+}
+.lang-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.lang-pill {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.55);
+  border: 1px solid rgba(245,240,232,0.12);
+  padding: 5px 12px;
+  letter-spacing: 0.03em;
+  transition: all 0.2s;
+  cursor: default;
+}
+.lang-pill:hover, .lang-pill.hi {
+  color: var(--cream);
+  border-color: rgba(200,73,12,0.6);
+  background: rgba(200,73,12,0.1);
+}
+
+/* ══ RULED SECTION HEADER ══ */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 4rem;
+}
+.sec-head-rule { flex: 1; height: 1px; background: var(--cream-darker); }
+.sec-head-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brown);
+  padding: 0 20px;
+  white-space: nowrap;
+}
+
+/* ══ STORY SECTION ══ */
+.story {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 7rem 3rem;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 6rem;
+  align-items: start;
+}
+.story-left {}
+.story-num {
+  font-family: var(--serif);
+  font-size: 7rem;
+  font-weight: 300;
+  color: var(--cream-darker);
+  line-height: 1;
+  margin-bottom: -1.5rem;
+}
+.story-h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+.story-h2 em { font-style: italic; color: var(--sienna); }
+.story-right {
+  padding-top: 1rem;
+}
+.story-right p {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ink-3);
+  line-height: 1.8;
+  margin-bottom: 1.4rem;
+}
+.story-right strong { font-weight: 600; color: var(--ink-2); }
+.story-right p:last-child { margin-bottom: 0; }
+
+/* ══ PILLARS ══ */
+.pillars-section {
+  background: var(--green-deep);
+  padding: 7rem 3rem;
+}
+.pillars-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.pillars-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 4rem;
+}
+.pillars-top-h {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 3.5vw, 3.4rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.pillars-top-h em { font-style: italic; color: rgba(245,240,232,0.4); }
+.pillars-top-p {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.4);
+  line-height: 1.75;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(245,240,232,0.06);
+  border: 1px solid rgba(245,240,232,0.06);
+}
+.pillar-card {
+  background: var(--green-deep);
+  padding: 2.5rem 2rem;
+  position: relative;
+  transition: background 0.25s var(--ease);
+}
+.pillar-card:hover { background: var(--green-mid); }
+.pillar-card::before {
+  content: attr(data-n);
+  position: absolute;
+  top: 1.5rem;
+  right: 1.8rem;
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: rgba(245,240,232,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.pillar-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(200,73,12,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.pillar-icon-wrap svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--sienna-light);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.pillar-title {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+.pillar-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.45);
+  line-height: 1.65;
+}
+
+/* ══ DATASETS ══ */
+.datasets {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 7rem 3rem;
+}
+.ds-heading {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 3.5vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.ds-heading em { font-style: italic; color: var(--sienna); }
+.ds-sub {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 4rem;
+}
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ds-table thead tr {
+  border-bottom: 2px solid var(--ink);
+}
+.ds-table thead th {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brown);
+  padding: 0 0 12px;
+  text-align: left;
+}
+.ds-table thead th:last-child { text-align: right; }
+.ds-table tbody tr {
+  border-bottom: 1px solid var(--cream-darker);
+  transition: background 0.15s;
+}
+.ds-table tbody tr:hover { background: var(--cream-dark); }
+.ds-table tbody td {
+  padding: 20px 0;
+  vertical-align: top;
+}
+.ds-table tbody td:first-child {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  padding-right: 2rem;
+  width: 26%;
+}
+.ds-table tbody td:nth-child(2) {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  padding-right: 2rem;
+}
+.ds-tag {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 4px 10px;
+  margin-right: 6px;
+  margin-bottom: 5px;
+}
+.ds-tag.green { background: rgba(29,158,117,0.12); color: #1D6B4F; border: 1px solid rgba(29,158,117,0.25); }
+.ds-tag.sienna { background: rgba(200,73,12,0.1); color: var(--sienna); border: 1px solid rgba(200,73,12,0.2); }
+.ds-tag.brown { background: rgba(139,115,85,0.12); color: var(--brown); border: 1px solid rgba(139,115,85,0.25); }
+.ds-table tbody td:last-child {
+  text-align: right;
+  vertical-align: middle;
+}
+.ds-link {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--sienna);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+}
+.ds-link:hover { text-decoration: underline; }
+
+/* ══ SCALE BANNER ══ */
+.scale-banner {
+  background: var(--sienna);
+  padding: 5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.scale-banner::before {
+  content: '10M';
+  position: absolute;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--serif);
+  font-size: 18rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.07);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+.scale-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.scale-kicker {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+}
+.scale-h {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.scale-h em { font-style: italic; }
+.scale-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.75;
+}
+.scale-desc strong { color: #fff; font-weight: 600; }
+
+/* ══ EVALUATIONS ══ */
+.evals {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 7rem 3rem;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 6rem;
+  align-items: start;
+}
+.evals-left {}
+.evals-left .sec-head { margin-bottom: 2rem; }
+.evals-h {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+.evals-p {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+.eval-entry {
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--cream-darker);
+}
+.eval-entry:last-child { border-bottom: 1px solid var(--cream-darker); }
+.eval-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  gap: 12px;
+}
+.eval-name {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.eval-link {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sienna);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.eval-link:hover { text-decoration: underline; }
+.eval-desc {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* Benchmark panel */
+.bench-panel {
+  background: var(--green-deep);
+  overflow: hidden;
+}
+.bench-panel-hd {
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(245,240,232,0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bench-panel-title {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+}
+.bench-panel-note {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: rgba(245,240,232,0.2);
+  letter-spacing: 0.05em;
+}
+.bench-rows { padding: 0; }
+.brow {
+  display: grid;
+  grid-template-columns: 120px 1fr 44px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 22px;
+  border-bottom: 1px solid rgba(245,240,232,0.05);
+  transition: background 0.15s;
+}
+.brow:hover { background: var(--green-mid); }
+.brow-lang {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: rgba(245,240,232,0.8);
+  font-weight: 400;
+}
+.brow-lang span {
+  display: block;
+  font-size: 9px;
+  color: rgba(245,240,232,0.25);
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  margin-top: 1px;
+}
+.brow-track {
+  height: 3px;
+  background: rgba(245,240,232,0.08);
+  position: relative;
+}
+.brow-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: var(--sienna);
+  transition: width 0.8s var(--ease);
+}
+.brow-score {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--cream);
+  text-align: right;
+}
+.bench-more {
+  padding: 14px 22px;
+  display: flex;
+  justify-content: flex-end;
+}
+.bench-more a {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sienna-light);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.bench-more a:hover { text-decoration: underline; }
+
+/* ══ CLIENTS ══ */
+.clients {
+  background: var(--cream-dark);
+  border-top: 1px solid var(--cream-darker);
+  border-bottom: 1px solid var(--cream-darker);
+  padding: 5rem 3rem;
+}
+.clients-inner { max-width: 1280px; margin: 0 auto; }
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin-top: 3rem;
+  border: 1px solid var(--cream-darker);
+  background: var(--cream-darker);
+  gap: 1px;
+}
+.client-box {
+  background: var(--cream-dark);
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.client-box:hover { background: var(--cream); }
+.client-box span {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brown);
+  text-align: center;
+  line-height: 1.4;
+}
+.client-box.cta-box {
+  background: var(--green-deep);
+  cursor: pointer;
+  text-decoration: none;
+}
+.client-box.cta-box:hover { background: var(--green-mid); }
+.client-box.cta-box span {
+  color: rgba(245,240,232,0.55);
+  font-size: 10px;
+}
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 5rem 3rem 2.5rem;
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 4rem;
+  padding-bottom: 4rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+.footer-brand-name {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+.footer-brand-p {
+  font-size: 13px;
+  color: rgba(245,240,232,0.35);
+  line-height: 1.7;
+  max-width: 240px;
+}
+.footer-col-h {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.25);
+  margin-bottom: 1.2rem;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: rgba(245,240,232,0.5);
+  text-decoration: none;
+  margin-bottom: 0.6rem;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--cream); }
+.footer-subscribe .footer-col-h { margin-bottom: 0.5rem; }
+.footer-subscribe-p {
+  font-size: 12px;
+  color: rgba(245,240,232,0.3);
+  margin-bottom: 1rem;
+  line-height: 1.65;
+}
+.sub-row {
+  display: flex;
+  border: 1px solid rgba(245,240,232,0.12);
+}
+.sub-row input {
+  flex: 1;
+  background: rgba(245,240,232,0.05);
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--cream);
+}
+.sub-row input::placeholder { color: rgba(245,240,232,0.2); }
+.sub-row button {
+  background: var(--sienna);
+  border: none;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.sub-row button:hover { background: var(--sienna-light); }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(245,240,232,0.2);
+  letter-spacing: 0.04em;
+}
+.footer-legal {
+  display: flex;
+  gap: 22px;
+}
+.footer-legal a {
+  font-size: 11px;
+  color: rgba(245,240,232,0.25);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-legal a:hover { color: rgba(245,240,232,0.6); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; min-height: auto; }
+  .hero::after { display: none; }
+  .hero { padding: 0 2rem; }
+  .hero-left { padding: 5rem 0 2rem; }
+  .hero-right { padding: 2rem 0 5rem; }
+  .hero-desc { max-width: 100%; }
+  .pillars-grid { grid-template-columns: 1fr 1fr; }
+  .pillars-top { grid-template-columns: 1fr; gap: 1.5rem; }
+  .story { grid-template-columns: 1fr; gap: 2.5rem; padding: 5rem 2rem; }
+  .story-num { display: none; }
+  .datasets { padding: 5rem 2rem; }
+  .scale-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .scale-banner::before { display: none; }
+  .evals { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .pillars-section { padding: 5rem 2rem; }
+  .clients { padding: 4rem 2rem; }
+  .nav-links { display: none; }
+  .nav-mob { display: flex; }
+  .nav-wrap { padding: 0 1.5rem; }
+  .clients-grid { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width: 640px) {
+  .hero-stat-block { grid-template-columns: 1fr 1fr; }
+  .hero-h1 { font-size: 3rem; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .ds-table thead th:nth-child(2), .ds-table tbody td:nth-child(2) { display: none; }
+  .footer-top { grid-template-columns: 1fr; }
+  .clients-grid { grid-template-columns: repeat(2,1fr); }
+  .scale-h { font-size: 2.6rem; }
+  .scale-banner { padding: 4rem 2rem; }
+  .hero-btns { flex-direction: column; align-items: flex-start; }
+}
+
+/* ══ SCROLL REVEAL ══ */
+.sr {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+}
+.sr.on { opacity: 1; transform: translateY(0); }
+.sr-delay-1 { transition-delay: 0.08s; }
+.sr-delay-2 { transition-delay: 0.16s; }
+.sr-delay-3 { transition-delay: 0.24s; }
+.sr-delay-4 { transition-delay: 0.32s; }
+
+/* ══ HERO ENTER ══ */
+@keyframes heroIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.hi { animation: heroIn 0.7s var(--ease) both; }
+.hi-1 { animation-delay: 0.05s; }
+.hi-2 { animation-delay: 0.15s; }
+.hi-3 { animation-delay: 0.25s; }
+.hi-4 { animation-delay: 0.38s; }
+.hi-5 { animation-delay: 0.5s; }
+.bb{
+  height: 50px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-wrap">
+    <a class="nav-brand" href="#">
+      <img  class="bb" src="logo-removebg-preview.png"/>
+      <span class="nav-brand-sub">AI Research</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://evals.ai.joshtalks.com/blog" target="_blank">Research</a></li>
+      <li><a href="/catalogue">ASR Datasets</a></li>
+      <li><a href="https://evals.ai.joshtalks.com/" target="_blank">TTS Evals</a></li>
+      <li><a href="https://voice-of-india.ai.joshtalks.com/" target="_blank">Voice of India</a></li>
+      <li><a href="https://ai.joshtalks.com/research/human-1" target="_blank">Human-1</a></li>
+    </ul>
+    <a class="nav-contact" href="/contact-us">Contact Us</a>
+    <button class="nav-mob" style="background:none;border:none;cursor:pointer;padding:6px;" onclick="this.closest('nav').querySelector('.nav-links').style.display = this.closest('nav').querySelector('.nav-links').style.display === 'flex' ? '' : 'flex'" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#F5F0E8" stroke-width="1.5"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-kicker hi hi-1">Voice AI Infrastructure for India</div>
+      <h1 class="hero-h1 hi hi-2">
+        Research-grade<br>
+        voice data<br>
+        <em>built for India</em>
+      </h1>
+      <p class="hero-desc hi hi-3">
+        Datasets and evaluations that let AI labs and enterprise teams build speech models genuinely capable of understanding India's full linguistic diversity — from major languages to rare dialects.
+      </p>
+      <div class="hero-btns hi hi-4">
+        <a class="btn-fill" href="https://ai.joshtalks.com/catalogue">Explore Datasets <span class="arr">→</span></a>
+        <a class="btn-ghost" href="https://evals.ai.joshtalks.com/" target="_blank">View Benchmarks <span class="arr">↗</span></a>
+      </div>
+    </div>
+    <div class="hero-right hi hi-5">
+      <div class="hero-stats-label">Dataset Specifications</div>
+      <div class="hero-stat-block">
+        <div class="hero-stat">
+          <div class="hero-stat-n">10M+</div>
+          <div class="hero-stat-l">Hours per year</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-n">16</div>
+          <div class="hero-stat-l">Languages covered</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-n">5-tier</div>
+          <div class="hero-stat-l">QA annotation pipeline</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-n">9</div>
+          <div class="hero-stat-l">Emotion label classes</div>
+        </div>
+      </div>
+      <div class="lang-cloud-label">Available languages</div>
+      <div class="lang-cloud">
+        <span class="lang-pill hi">Hindi</span>
+        <span class="lang-pill hi">Tamil</span>
+        <span class="lang-pill hi">Telugu</span>
+        <span class="lang-pill hi">Bengali</span>
+        <span class="lang-pill hi">Marathi</span>
+        <span class="lang-pill hi">Kannada</span>
+        <span class="lang-pill hi">Malayalam</span>
+        <span class="lang-pill">Punjabi</span>
+        <span class="lang-pill">Gujarati</span>
+        <span class="lang-pill">Assamese</span>
+        <span class="lang-pill">Odia</span>
+        <span class="lang-pill">English</span>
+        <span class="lang-pill" style="opacity:0.5;font-style:italic">+ more</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / ABOUT -->
+<section>
+  <div class="story sr">
+    <div class="story-left">
+      <div class="story-num">01</div>
+      <h2 class="story-h2">We build the <em>voice infrastructure</em> AI needs</h2>
+    </div>
+    <div class="story-right">
+      <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-label">About</div><div class="sec-head-rule"></div></div>
+      <p>Josh Talks enables AI labs and enterprise teams to <strong>train, evaluate, and scale</strong> voice technologies that genuinely understand India's linguistic diversity. We collect, curate, and deliver research-grade conversational and multi-speaker voice datasets across Indian languages, accents, and real-world contexts.</p>
+      <p>Our datasets are built with rigorous human-in-the-loop quality control, full consent compliance, automated PII redaction, and end-to-end per-file auditability — because data that trains production speech models must meet production standards.</p>
+      <p>Customers include top AI labs and technology companies across the world.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DATA QUALITY PILLARS -->
+<section class="pillars-section">
+  <div class="pillars-inner">
+    <div class="pillars-top sr">
+      <div>
+        <div class="sec-head" style="margin-bottom:1.5rem;">
+          <div class="sec-head-rule" style="background:rgba(245,240,232,0.1)"></div>
+          <div class="sec-head-label" style="color:rgba(245,240,232,0.3)">Quality standards</div>
+          <div class="sec-head-rule" style="background:rgba(245,240,232,0.1)"></div>
+        </div>
+        <h2 class="pillars-top-h">Data you can <em>trust<br>in production</em></h2>
+      </div>
+      <p class="pillars-top-p">Four foundational commitments that distinguish research-grade voice data from commodity datasets. These aren't aspirational claims — they're engineering requirements we hold every dataset to.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card sr sr-delay-1" data-n="01">
+        <div class="pillar-icon-wrap">
+          <svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M5 11 Q9 5 13 11"/><circle cx="9" cy="9" r="1.5" fill="currentColor" stroke="none" style="fill:#E8673A"/></svg>
+        </div>
+        <div class="pillar-title">Grassroots diversity</div>
+        <p class="pillar-text">Collected from real speakers across states, socioeconomic tiers, and dialect regions — exactly where your product will be used, not studio-controlled environments.</p>
+      </div>
+      <div class="pillar-card sr sr-delay-2" data-n="02">
+        <div class="pillar-icon-wrap">
+          <svg viewBox="0 0 18 18"><path d="M3 14 L3 10 M7 14 L7 7 M11 14 L11 4 M15 14 L15 8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="pillar-title">Measurable quality</div>
+        <p class="pillar-text">Five-level human-in-the-loop annotation with automated anomaly detection keeps label error rates exceptionally low and consistently tracked.</p>
+      </div>
+      <div class="pillar-card sr sr-delay-3" data-n="03">
+        <div class="pillar-icon-wrap">
+          <svg viewBox="0 0 18 18"><path d="M9 2 L16 5 L16 10 Q16 15 9 17 Q2 15 2 10 L2 5 Z"/><path d="M6 9 L8 11 L12 7"/></svg>
+        </div>
+        <div class="pillar-title">Ethical by design</div>
+        <p class="pillar-text">Consent workflows that meet global standards, automated PII redaction, and contributor revenue-share models — data provenance you can explain to any regulator.</p>
+      </div>
+      <div class="pillar-card sr sr-delay-4" data-n="04">
+        <div class="pillar-icon-wrap">
+          <svg viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M2 6 L16 6"/><path d="M6 6 L6 16"/><path d="M9 9 L13 9 M9 12 L12 12"/></svg>
+        </div>
+        <div class="pillar-title">Enterprise-grade security</div>
+        <p class="pillar-text">Air-gapped labs, ISO-27001-aligned cloud practices, and full per-file audit trails — the compliance paper trail your legal and security teams will ask for.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATASETS TABLE -->
+<section>
+  <div class="datasets sr">
+    <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-label">Dataset catalogue</div><div class="sec-head-rule"></div></div>
+    <h2 class="ds-heading">Channel-separated <em>conversational</em><br>voice datasets</h2>
+    <p class="ds-sub">Large-scale, multi-topic, natural dialogues in Indian languages. Off-the-shelf volumes span tens of thousands of hours per language, with per-speaker metadata and contextual labels.</p>
+    <table class="ds-table">
+      <thead>
+        <tr>
+          <th>Dataset type</th>
+          <th>Description</th>
+          <th style="text-align:right">Tags</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Multilingual &amp; Code-Switching</td>
+          <td>Multilingual and code-switching voice datasets, low-resource and rare-language data, accented English speech, and full coverage of Hindi, Tamil, Telugu, Bengali, Marathi, Kannada, Malayalam, Punjabi, Odia, Gujarati, Assamese, and more.</td>
+          <td><span class="ds-tag green">ASR</span><span class="ds-tag sienna">Multilingual</span></td>
+        </tr>
+        <tr>
+          <td>Multi-Speaker</td>
+          <td>Spontaneous multi-party conversations with channel-separated stems, diarized speaker tracks for up to 16 simultaneous speakers, and structured debate datasets with turn-level annotations.</td>
+          <td><span class="ds-tag green">Diarization</span><span class="ds-tag brown">Debate</span></td>
+        </tr>
+        <tr>
+          <td>Emotion-Annotated</td>
+          <td>Emotionally aware and fully annotated conversations covering nine emotion classes: Neutral, Angry, Happy, Sad, Fear, Anxious, Surprised, Confused, and Excited.</td>
+          <td><span class="ds-tag sienna">Affective</span><span class="ds-tag brown">9 labels</span></td>
+        </tr>
+        <tr>
+          <td>Specialist Datasets</td>
+          <td>Noisy and adverse-environment recordings, privacy-preserving personalized voice data, accessibility-focused datasets, and child speech datasets for specialized research use cases.</td>
+          <td><span class="ds-tag brown">Custom</span><span class="ds-tag green">Access</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SCALE BANNER -->
+<div class="scale-banner">
+  <div class="scale-inner sr">
+    <div>
+      <div class="scale-kicker">Production capacity</div>
+      <h2 class="scale-h">10 million<br><em>hours per year</em></h2>
+    </div>
+    <p class="scale-desc">Our patented data production and annotation pipeline allows us to <strong>generate and label 10 million hours</strong> of voice data every year — turning data scarcity into abundance for India's full linguistic spectrum. No other organization works at this scale for Indian languages.</p>
+  </div>
+</div>
+
+<!-- EVALUATIONS -->
+<section>
+  <div class="evals">
+    <div class="evals-left sr">
+      <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-label">Evaluations</div><div class="sec-head-rule"></div></div>
+      <h2 class="evals-h">Benchmarks that measure real-world speech quality</h2>
+      <p class="evals-p">Alongside datasets, we publish rigorous evaluations so teams can measure and compare model performance on India-specific speech tasks — and track progress across the ecosystem.</p>
+      <div class="eval-entry">
+        <div class="eval-entry-top">
+          <div class="eval-name">TTS Evaluation Platform</div>
+          <a class="eval-link" href="https://evals.ai.joshtalks.com/" target="_blank">Open ↗</a>
+        </div>
+        <p class="eval-desc">Standardised text-to-speech benchmarks covering naturalness, intelligibility, and prosody across Indian languages, enabling direct model comparisons.</p>
+      </div>
+      <div class="eval-entry">
+        <div class="eval-entry-top">
+          <div class="eval-name">Voice of India</div>
+          <a class="eval-link" href="https://voice-of-india.ai.joshtalks.com/" target="_blank">Open ↗</a>
+        </div>
+        <p class="eval-desc">A broad-coverage evaluation suite measuring how well voice AI handles India's full diversity of speech in real-world conditions.</p>
+      </div>
+      <div class="eval-entry">
+        <div class="eval-entry-top">
+          <div class="eval-name">Human-1 Benchmark</div>
+          <a class="eval-link" href="https://ai.joshtalks.com/research/human-1" target="_blank">Open ↗</a>
+        </div>
+        <p class="eval-desc">A human-calibrated reference benchmark for measuring how closely synthesised and transcribed speech aligns with human perception across languages.</p>
+      </div>
+    </div>
+    <div class="bench-panel sr">
+      <div class="bench-panel-hd">
+        <span class="bench-panel-title">TTS Naturalness — illustrative scores</span>
+        <span class="bench-panel-note">MOS / 5.0</span>
+      </div>
+      <div class="bench-rows">
+        <div class="brow"><div class="brow-lang">Hindi<span>hi-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:82%"></div></div><div class="brow-score">4.1</div></div>
+        <div class="brow"><div class="brow-lang">Tamil<span>ta-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:76%"></div></div><div class="brow-score">3.8</div></div>
+        <div class="brow"><div class="brow-lang">Telugu<span>te-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:74%"></div></div><div class="brow-score">3.7</div></div>
+        <div class="brow"><div class="brow-lang">Bengali<span>bn-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:70%"></div></div><div class="brow-score">3.5</div></div>
+        <div class="brow"><div class="brow-lang">Marathi<span>mr-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:68%"></div></div><div class="brow-score">3.4</div></div>
+        <div class="brow"><div class="brow-lang">Kannada<span>kn-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:65%"></div></div><div class="brow-score">3.3</div></div>
+        <div class="brow"><div class="brow-lang">Malayalam<span>ml-IN</span></div><div class="brow-track"><div class="brow-fill" style="width:62%"></div></div><div class="brow-score">3.1</div></div>
+      </div>
+      <div class="bench-more"><a href="https://evals.ai.joshtalks.com/" target="_blank">View full benchmark →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="clients">
+  <div class="clients-inner">
+    <div class="sr">
+      <div class="sec-head"><div class="sec-head-rule"></div><div class="sec-head-label">Customers across our portfolio</div><div class="sec-head-rule"></div></div>
+    </div>
+    <div class="clients-grid sr">
+      <div class="client-box"><span>OpenAI</span></div>
+      <div class="client-box"><span>Meta</span></div>
+      <div class="client-box"><span>Google</span></div>
+      <div class="client-box"><span>Amazon</span></div>
+      <div class="client-box"><span>WhatsApp</span></div>
+      <div class="client-box"><span>Spotify</span></div>
+      <div class="client-box"><span>United Nations</span></div>
+      <div class="client-box"><span>IFC</span></div>
+      <div class="client-box"><span>Gates Foundation</span></div>
+      <div class="client-box"><span>ILO</span></div>
+      <div class="client-box"><span>Oni</span></div>
+      <a class="client-box cta-box" href="/contact-us"><span>Work with us →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">Josh Talks AI</div>
+        <p class="footer-brand-p">Voice infrastructure for AI that understands India's full linguistic diversity. Part of the Josh Talks Group.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-h">Products</div>
+        <a href="/catalogue">ASR Datasets</a>
+        <a href="https://evals.ai.joshtalks.com/" target="_blank">TTS Evals</a>
+        <a href="https://voice-of-india.ai.joshtalks.com/" target="_blank">Voice of India</a>
+        <a href="https://ai.joshtalks.com/research/human-1" target="_blank">Human-1</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-h">Company</div>
+        <a href="https://evals.ai.joshtalks.com/blog" target="_blank">Research</a>
+        <a href="/contact-us">Contact</a>
+        <a href="https://www.joshtalks.com" target="_blank">Josh Talks Group</a>
+      </div>
+      <div class="footer-subscribe">
+        <div class="footer-col-h">Stay updated</div>
+        <p class="footer-subscribe-p">New ASR datasets and TTS benchmarks for Indian languages — straight to your inbox.</p>
+        <div class="sub-row">
+          <input type="email" placeholder="your@email.com">
+          <button type="button">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© Josh Talks Group · ai.joshtalks.com</p>
+      <div class="footer-legal">
+        <a href="https://www.joshtalks.com/en/terms-conditions" target="_blank">Terms</a>
+        <a href="https://www.joshtalks.com/en/privacy-policy" target="_blank">Privacy</a>
+        <a href="https://www.joshtalks.com/en/community-guidelines" target="_blank">Guidelines</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
